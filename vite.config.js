@@ -65,7 +65,7 @@ export default defineConfig({
     sourcemap: false
   },
   
-  // 构建完成后复制其他静态页面
+  // 构建完成后复制其他静态页面和资源
   plugins: [
     {
       name: 'copy-static-pages',
@@ -79,6 +79,13 @@ export default defineConfig({
             copyFileSync(src, dest);
             console.log(`Copied ${page} to dist/`);
           }
+        }
+        // 复制 docs 文件夹到 dist（PDF文档）
+        const docsSrc = resolve(__dirname, 'docs');
+        const docsDest = resolve(__dirname, 'dist', 'docs');
+        if (existsSync(docsSrc)) {
+          copyDir(docsSrc, docsDest);
+          console.log('Copied docs/ to dist/docs/');
         }
       }
     }
