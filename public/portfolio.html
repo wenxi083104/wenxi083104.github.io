@@ -18,11 +18,7 @@
             --shadow-hover: 0 8px 32px rgba(0,0,0,0.1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -31,12 +27,9 @@
             line-height: 1.6;
         }
 
-        /* 顶部导航 */
         .top-nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 56px;
             background: rgba(255,255,255,0.95);
             backdrop-filter: blur(12px);
@@ -48,243 +41,44 @@
             z-index: 1000;
         }
 
-        .nav-brand {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text);
-            text-decoration: none;
-        }
+        .nav-brand { font-size: 18px; font-weight: 700; color: var(--text); text-decoration: none; }
+        .nav-links { display: flex; gap: 24px; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent); }
 
-        .nav-links {
-            display: flex;
-            gap: 24px;
-        }
+        .hero { padding: 120px 32px 60px; max-width: 1200px; margin: 0 auto; text-align: center; }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 16px; letter-spacing: -0.02em; }
+        .hero p { font-size: 18px; color: var(--text-secondary); max-width: 600px; margin: 0 auto 32px; }
+        .hero-stats { display: flex; justify-content: center; gap: 48px; margin-top: 40px; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 36px; font-weight: 700; color: var(--accent); }
+        .stat-label { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
 
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
+        .filter-bar { display: flex; justify-content: center; gap: 12px; padding: 0 32px; margin-bottom: 40px; flex-wrap: wrap; }
+        .filter-btn { padding: 10px 24px; border: 1px solid var(--border); background: var(--card-bg); border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); }
+        .filter-btn:hover, .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
 
-        .nav-links a:hover {
-            color: var(--accent);
-        }
+        .portfolio-grid { max-width: 1200px; margin: 0 auto; padding: 0 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; }
+        .portfolio-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s ease; }
+        .portfolio-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .card-header { padding: 24px 24px 0; display: flex; align-items: flex-start; gap: 12px; }
+        .card-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+        .card-meta { flex: 1; }
+        .card-category { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .card-title { font-size: 18px; font-weight: 700; line-height: 1.4; margin-bottom: 8px; }
+        .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .card-tag { padding: 4px 10px; background: var(--accent-light); color: var(--accent); border-radius: 100px; font-size: 12px; font-weight: 500; }
+        .card-body { padding: 16px 24px 24px; }
+        .card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px; }
+        .card-highlights { display: flex; flex-direction: column; gap: 8px; }
+        .highlight-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text); }
+        .highlight-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-top: 7px; flex-shrink: 0; }
+        .card-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .card-date { font-size: 13px; color: var(--text-secondary); }
+        .card-action { padding: 8px 16px; background: var(--accent); color: white; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: opacity 0.2s; cursor: pointer; border: none; }
+        .card-action:hover { opacity: 0.9; }
+        .card-action.uploaded { background: #059669; }
 
-        /* Hero */
-        .hero {
-            padding: 120px 32px 60px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 32px;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 48px;
-            margin-top: 40px;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        /* 分类标签 */
-        .filter-bar {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            padding: 0 32px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 10px 24px;
-            border: 1px solid var(--border);
-            background: var(--card-bg);
-            border-radius: 100px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--text-secondary);
-        }
-
-        .filter-btn:hover,
-        .filter-btn.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        /* 作品网格 */
-        .portfolio-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 32px 80px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 24px;
-        }
-
-        .portfolio-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .portfolio-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .card-header {
-            padding: 24px 24px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-
-        .card-meta {
-            flex: 1;
-        }
-
-        .card-category {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 4px;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 700;
-            line-height: 1.4;
-            margin-bottom: 8px;
-        }
-
-        .card-tags {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .card-tag {
-            padding: 4px 10px;
-            background: var(--accent-light);
-            color: var(--accent);
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .card-body {
-            padding: 16px 24px 24px;
-        }
-
-        .card-desc {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 16px;
-        }
-
-        .card-highlights {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .highlight-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            font-size: 13px;
-            color: var(--text);
-        }
-
-        .highlight-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            margin-top: 7px;
-            flex-shrink: 0;
-        }
-
-        .card-footer {
-            padding: 16px 24px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-date {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .card-action {
-            padding: 8px 16px;
-            background: var(--accent);
-            color: white;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .card-action:hover {
-            opacity: 0.9;
-        }
-
-        /* 分类颜色 */
         .cat-event .card-icon { background: #fef3c7; }
         .cat-event .card-category { color: #d97706; }
         .cat-sop .card-icon { background: #dbeafe; }
@@ -296,37 +90,69 @@
         .cat-admin .card-icon { background: #e0e7ff; }
         .cat-admin .card-category { color: #4f46e5; }
 
-        /* 底部 */
-        .footer {
-            text-align: center;
-            padding: 40px 32px;
-            border-top: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 14px;
+        .footer { text-align: center; padding: 40px 32px; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 14px; }
+
+        /* 模态框样式 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
         }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .modal h2 { font-size: 20px; margin-bottom: 16px; }
+        .modal p { color: var(--text-secondary); margin-bottom: 24px; }
+        .file-input-wrapper {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+        }
+        .file-input-wrapper:hover {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+        .file-input-wrapper input[type="file"] {
+            display: none;
+        }
+        .file-input-wrapper .icon { font-size: 48px; margin-bottom: 12px; }
+        .file-input-wrapper .text { color: var(--text-secondary); font-size: 14px; }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+        .modal-btn { padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; border: none; }
+        .modal-btn.secondary { background: var(--bg); color: var(--text); }
+        .modal-btn.primary { background: var(--accent); color: white; }
+        .file-list { margin: 16px 0; }
+        .file-item { display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--bg); border-radius: 8px; margin-bottom: 8px; }
+        .file-item .name { flex: 1; font-size: 14px; }
+        .file-item .status { font-size: 12px; color: var(--text-secondary); }
+        .file-item .status.success { color: #059669; }
 
         @media (max-width: 768px) {
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-                padding: 0 16px 60px;
-            }
-            .hero {
-                padding: 100px 16px 40px;
-            }
-            .hero-stats {
-                gap: 24px;
-            }
-            .filter-bar {
-                padding: 0 16px;
-            }
-            .top-nav {
-                padding: 0 16px;
-            }
+            .portfolio-grid { grid-template-columns: 1fr; padding: 0 16px 60px; }
+            .hero { padding: 100px 16px 40px; }
+            .hero-stats { gap: 24px; }
+            .filter-bar { padding: 0 16px; }
+            .top-nav { padding: 0 16px; }
         }
     </style>
 </head>
 <body>
-    <!-- 顶部导航 -->
     <nav class="top-nav">
         <a href="./index.html" class="nav-brand">戴雯晞 · 作品集</a>
         <div class="nav-links">
@@ -336,27 +162,16 @@
         </div>
     </nav>
 
-    <!-- Hero -->
     <section class="hero">
         <h1>企业文化实战作品集</h1>
         <p>从字节跳动到矽递科技，覆盖活动策划、SOP 沉淀、复盘总结、行政统筹等全模块工作文档</p>
         <div class="hero-stats">
-            <div class="stat-item">
-                <div class="stat-number">17</div>
-                <div class="stat-label">工作文档</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">5</div>
-                <div class="stat-label">工作模块</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">3</div>
-                <div class="stat-label">城市覆盖</div>
-            </div>
+            <div class="stat-item"><div class="stat-number" id="docCount">0</div><div class="stat-label">工作文档</div></div>
+            <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">工作模块</div></div>
+            <div class="stat-item"><div class="stat-number">3</div><div class="stat-label">城市覆盖</div></div>
         </div>
     </section>
 
-    <!-- 分类筛选 -->
     <div class="filter-bar">
         <button class="filter-btn active" onclick="filterPortfolio('all')">全部</button>
         <button class="filter-btn" onclick="filterPortfolio('event')">🎯 活动策划</button>
@@ -366,9 +181,7 @@
         <button class="filter-btn" onclick="filterPortfolio('admin')">📝 行政统筹</button>
     </div>
 
-    <!-- 作品网格 -->
     <div class="portfolio-grid" id="portfolioGrid">
-
         <!-- 活动策划 -->
         <div class="portfolio-card cat-event" data-category="event">
             <div class="card-header">
@@ -376,10 +189,7 @@
                 <div class="card-meta">
                     <div class="card-category">活动策划</div>
                     <div class="card-title">Lucky Day 幸运日活动策划</div>
-                    <div class="card-tags">
-                        <span class="card-tag">创意玩法</span>
-                        <span class="card-tag">员工关怀</span>
-                    </div>
+                    <div class="card-tags"><span class="card-tag">创意玩法</span><span class="card-tag">员工关怀</span></div>
                 </div>
             </div>
             <div class="card-body">
@@ -392,7 +202,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2026 年</span>
-                <a href="#" class="card-action" onclick="alert('文档预览功能开发中')">查看文档</a>
+                <button class="card-action" onclick="openUploadModal('lucky-day', 'Lucky Day 幸运日活动策划')">查看文档</button>
             </div>
         </div>
 
@@ -402,10 +212,7 @@
                 <div class="card-meta">
                     <div class="card-category">活动策划</div>
                     <div class="card-title">「干饭迎新年」年夜饭活动</div>
-                    <div class="card-tags">
-                        <span class="card-tag">节日活动</span>
-                        <span class="card-tag">三城联动</span>
-                    </div>
+                    <div class="card-tags"><span class="card-tag">节日活动</span><span class="card-tag">三城联动</span></div>
                 </div>
             </div>
             <div class="card-body">
@@ -418,7 +225,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025-2026 年</span>
-                <a href="#" class="card-action" onclick="alert('文档预览功能开发中')">查看文档</a>
+                <button class="card-action" onclick="openUploadModal('new-year-dinner', '年夜饭活动')">查看文档</button>
             </div>
         </div>
 
@@ -429,10 +236,7 @@
                 <div class="card-meta">
                     <div class="card-category">SOP 文档</div>
                     <div class="card-title">Offsite 团建 SOP 标准流程</div>
-                    <div class="card-tags">
-                        <span class="card-tag">流程标准化</span>
-                        <span class="card-tag">可复用</span>
-                    </div>
+                    <div class="card-tags"><span class="card-tag">流程标准化</span><span class="card-tag">可复用</span></div>
                 </div>
             </div>
             <div class="card-body">
@@ -445,7 +249,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <a href="#" class="card-action" onclick="alert('文档预览功能开发中')">查看文档</a>
+                <button class="card-action" onclick="openUploadModal('offsite-sop', 'Offsite 团建 SOP')">查看文档</button>
             </div>
         </div>
 
@@ -455,10 +259,7 @@
                 <div class="card-meta">
                     <div class="card-category">SOP 文档</div>
                     <div class="card-title">费用报销 SOP</div>
-                    <div class="card-tags">
-                        <span class="card-tag">财务流程</span>
-                        <span class="card-tag">行政规范</span>
-                    </div>
+                    <div class="card-tags"><span class="card-tag">财务流程</span><span class="card-tag">行政规范</span></div>
                 </div>
             </div>
             <div class="card-body">
@@ -471,7 +272,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025-2026 年</span>
-                <a href="#" class="card-action" onclick="alert('文档预览功能开发中')">查看文档</a>
+                <button class="card-action" onclick="openUploadModal('reimbursement-sop', '费用报销 SOP')">查看文档</button>
             </div>
         </div>
 
@@ -482,10 +283,7 @@
                 <div class="card-meta">
                     <div class="card-category">复盘总结</div>
                     <div class="card-title">Offsite 团建方案复盘</div>
-                    <div class="card-tags">
-                        <span class="card-tag">问题诊断</span>
-                        <span class="card-tag">经验沉淀</span>
-                    </div>
+                    <div class="card-tags"><span class="card-tag">问题诊断</span><span class="card-tag">经验沉淀</span></div>
                 </div>
             </div>
             <div class="card-body">
@@ -498,7 +296,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <a href="#" class="card-action" onclick="alert('文档预览功能开发中')">查看文档</a>
+                <button class="card-action" onclick="openUploadModal('offsite-review', 'Offsite 团建复盘')">查看文档</button>
             </div>
         </div>
 
@@ -508,10 +306,7 @@
                 <div class="card-meta">
                     <div class="card-category">复盘总结</div>
                     <div class="card-title">11.20 / 12月 / 1月工作总结</div>
-                    <div class="card-tags">
-                        <span class="card-tag">月度复盘</span>
-                        <span class="card-tag">工作方法</span>
-                    </div>
+                    <div class="card-tags"><span class="card-tag">月度复盘</span><span class="card-tag">工作方法</span></div>
                 </div>
             </div>
             <div class="card-body">
@@ -524,7 +319,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025-2026 年</span>
-                <a href="#" class="card-action" onclick="alert('文档预览功能开发中')">查看文档</a>
+                <button class="card-action" onclick="openUploadModal('monthly-summary', '月度工作总结')">查看文档</button>
             </div>
         </div>
 
@@ -534,10 +329,7 @@
                 <div class="card-meta">
                     <div class="card-category">复盘总结</div>
                     <div class="card-title">DAY1 入职总结</div>
-                    <div class="card-tags">
-                        <span class="card-tag">新人成长</span>
-                        <span class="card-tag">工作理解</span>
-                    </div>
+                    <div class="card-tags"><span class="card-tag">新人成长</span><span class="card-tag">工作理解</span></div>
                 </div>
             </div>
             <div class="card-body">
@@ -550,7 +342,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <a href="#" class="card-action" onclick="alert('文档预览功能开发中')">查看文档</a>
+                <button class="card-action" onclick="openUploadModal('day1-summary', 'DAY1 入职总结')">查看文档</button>
             </div>
         </div>
 
@@ -561,10 +353,7 @@
                 <div class="card-meta">
                     <div class="card-category">行程方案</div>
                     <div class="card-title">TikTok Eng 冬季团建方案</div>
-                    <div class="card-tags">
-                        <span class="card-tag">三城方案</span>
-                        <span class="card-tag">异地执行</span>
-                    </div>
+                    <div class="card-tags"><span class="card-tag">三城方案</span><span class="card-tag">异地执行</span></div>
                 </div>
             </div>
             <div class="card-body">
@@ -577,7 +366,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <a href="#" class="card-action" onclick="alert('文档预览功能开发中')">查看文档</a>
+                <button class="card-action" onclick="openUploadModal('winter-team-building', 'TikTok Eng 冬季团建')">查看文档</button>
             </div>
         </div>
 
@@ -587,10 +376,7 @@
                 <div class="card-meta">
                     <div class="card-category">行程方案</div>
                     <div class="card-title">Global LIVE 2025 Leadership Offsite · 长沙</div>
-                    <div class="card-tags">
-                        <span class="card-tag">高管会议</span>
-                        <span class="card-tag">城市文化</span>
-                    </div>
+                    <div class="card-tags"><span class="card-tag">高管会议</span><span class="card-tag">城市文化</span></div>
                 </div>
             </div>
             <div class="card-body">
@@ -603,7 +389,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <a href="#" class="card-action" onclick="alert('文档预览功能开发中')">查看文档</a>
+                <button class="card-action" onclick="openUploadModal('global-live-offsite', 'Global LIVE Offsite')">查看文档</button>
             </div>
         </div>
 
@@ -614,10 +400,7 @@
                 <div class="card-meta">
                     <div class="card-category">行政统筹</div>
                     <div class="card-title">TikTok Data Spot Bonus 评优项目</div>
-                    <div class="card-tags">
-                        <span class="card-tag">评优活动</span>
-                        <span class="card-tag">物料制作</span>
-                    </div>
+                    <div class="card-tags"><span class="card-tag">评优活动</span><span class="card-tag">物料制作</span></div>
                 </div>
             </div>
             <div class="card-body">
@@ -630,24 +413,127 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <a href="#" class="card-action" onclick="alert('文档预览功能开发中')">查看文档</a>
+                <button class="card-action" onclick="openUploadModal('spot-bonus', 'Spot Bonus 评优')">查看文档</button>
             </div>
         </div>
-
     </div>
 
-    <!-- 底部 -->
     <footer class="footer">
         <p>© 2026 戴雯晞 · 企业文化作品集 · 持续更新中</p>
     </footer>
 
+    <!-- 上传模态框 -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal">
+            <h2>📄 <span id="modalDocName">文档</span></h2>
+            <p>选择本地 PDF 文件进行查看</p>
+            
+            <div class="file-list" id="fileList"></div>
+            
+            <div class="file-input-wrapper" onclick="document.getElementById('fileInput').click()">
+                <input type="file" id="fileInput" accept=".pdf" onchange="handleFileSelect(event)">
+                <div class="icon">📁</div>
+                <div class="text">点击选择 PDF 文件<br>或拖拽文件到此处</div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal()">取消</button>
+                <button class="modal-btn primary" onclick="viewFile()">查看文档</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 分类筛选
+        // 存储每个文档对应的文件
+        const docFiles = {};
+        let currentDocId = null;
+
+        function openUploadModal(docId, docName) {
+            currentDocId = docId;
+            document.getElementById('modalDocName').textContent = docName;
+            document.getElementById('uploadModal').classList.add('active');
+            updateFileList();
+        }
+
+        function closeModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+            currentDocId = null;
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                docFiles[currentDocId] = file;
+                updateFileList();
+                
+                // 更新按钮状态
+                const btn = document.querySelector(`button[onclick="openUploadModal('${currentDocId}', '${document.getElementById('modalDocName').textContent}')"]`);
+                if (btn) {
+                    btn.classList.add('uploaded');
+                    btn.textContent = '已上传 ✓';
+                }
+            } else {
+                alert('请选择 PDF 文件');
+            }
+        }
+
+        function updateFileList() {
+            const list = document.getElementById('fileList');
+            const file = docFiles[currentDocId];
+            
+            if (file) {
+                list.innerHTML = `
+                    <div class="file-item">
+                        <span class="name">📄 ${file.name}</span>
+                        <span class="status success">已选择</span>
+                    </div>
+                `;
+            } else {
+                list.innerHTML = '';
+            }
+        }
+
+        function viewFile() {
+            const file = docFiles[currentDocId];
+            if (file) {
+                // 创建临时URL并在新窗口打开
+                const url = URL.createObjectURL(file);
+                window.open(url, '_blank');
+            } else {
+                alert('请先选择 PDF 文件');
+            }
+        }
+
+        // 拖拽上传
+        document.querySelector('.file-input-wrapper').addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.currentTarget.style.borderColor = 'var(--accent)';
+        });
+
+        document.querySelector('.file-input-wrapper').addEventListener('dragleave', (e) => {
+            e.currentTarget.style.borderColor = 'var(--border)';
+        });
+
+        document.querySelector('.file-input-wrapper').addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.currentTarget.style.borderColor = 'var(--border)';
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'application/pdf') {
+                docFiles[currentDocId] = file;
+                updateFileList();
+                const btn = document.querySelector(`button[onclick*="${currentDocId}"]`);
+                if (btn) {
+                    btn.classList.add('uploaded');
+                    btn.textContent = '已上传 ✓';
+                }
+            }
+        });
+
+        // 筛选功能
         function filterPortfolio(category) {
             const cards = document.querySelectorAll('.portfolio-card');
             const buttons = document.querySelectorAll('.filter-btn');
-
-            // 更新按钮状态
+            
             buttons.forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.textContent.includes('全部') && category === 'all') {
@@ -657,7 +543,6 @@
                 }
             });
 
-            // 显示/隐藏卡片
             cards.forEach(card => {
                 if (category === 'all' || card.dataset.category === category) {
                     card.style.display = 'block';
@@ -675,7 +560,7 @@
             });
         }
 
-        // 初始化动画
+        // 入场动画
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.portfolio-card');
             cards.forEach((card, index) => {
@@ -687,6 +572,16 @@
                     card.style.transform = 'translateY(0)';
                 }, index * 80);
             });
+
+            // 更新文档数量
+            document.getElementById('docCount').textContent = cards.length;
+        });
+
+        // 点击遮罩关闭模态框
+        document.getElementById('uploadModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeModal();
+            }
         });
     </script>
 </body>

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戴雯晞 · 企业文化作品集</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --card-bg: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #666666;
+            --accent: #2b6cb0;
+            --accent-light: #ebf4ff;
+            --border: #e8e8e8;
+            --shadow: 0 2px 12px rgba(0,0,0,0.06);
+            --shadow-hover: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* 顶部导航 */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 32px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* 分类标签 */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 0 32px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* 作品网格 */
+        .portfolio-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        .portfolio-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-header {
+            padding: 24px 24px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .card-meta {
+            flex: 1;
+        }
+
+        .card-category {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .card-tag {
+            padding: 4px 10px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .card-body {
+            padding: 16px 24px 24px;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .card-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .highlight-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            margin-top: 7px;
+            flex-shrink: 0;
+        }
+
+        .card-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-date {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .card-action {
+            padding: 8px 16px;
+            background: var(--accent);
+            color: white;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .card-action:hover {
+            opacity: 0.9;
+        }
+
+        /* 分类颜色 */
+        .cat-event .card-icon { background: #fef3c7; }
+        .cat-event .card-category { color: #d97706; }
+        .cat-sop .card-icon { background: #dbeafe; }
+        .cat-sop .card-category { color: #2563eb; }
+        .cat-summary .card-icon { background: #d1fae5; }
+        .cat-summary .card-category { color: #059669; }
+        .cat-plan .card-icon { background: #fce7f3; }
+        .cat-plan .card-category { color: #db2777; }
+        .cat-admin .card-icon { background: #e0e7ff; }
+        .cat-admin .card-category { color: #4f46e5; }
+
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 40px 32px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+                padding: 0 16px 60px;
+            }
+            .hero {
+                padding: 100px 16px 40px;
+            }
+            .hero-stats {
+                gap: 24px;
+            }
+            .filter-bar {
+                padding: 0 16px;
+            }
+            .top-nav {
+                padding: 0 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <nav class="top-nav">
+        <a href="./index.html" class="nav-brand">戴雯晞 · 作品集</a>
+        <div class="nav-links">
+            <a href="./index.html">🏠 个人空间</a>
+            <a href="./project.html">📁 项目介绍</a>
+            <a href="./dashboard.html">🚀 工作看板</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>企业文化实战作品集</h1>
+        <p>从字节跳动到矽递科技，覆盖活动策划、SOP 沉淀、复盘总结、行政统筹等全模块工作文档</p>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number">17</div>
+                <div class="stat-label">工作文档</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5</div>
+                <div class="stat-label">工作模块</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3</div>
+                <div class="stat-label">城市覆盖</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 分类筛选 -->
+    <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterPortfolio('all')">全部</button>
+        <button class="filter-btn" onclick="filterPortfolio('event')">🎯 活动策划</button>
+        <button class="filter-btn" onclick="filterPortfolio('sop')">📋 SOP 文档</button>
+        <button class="filter-btn" onclick="filterPortfolio('summary')">📊 复盘总结</button>
+        <button class="filter-btn" onclick="filterPortfolio('plan')">✈️ 行程方案</button>
+        <button class="filter-btn" onclick="filterPortfolio('admin')">📝 行政统筹</button>
+    </div>
+
+    <!-- 作品网格 -->
+    <div class="portfolio-grid" id="portfolioGrid">
+
+        <!-- 活动策划 -->
+        <div class="portfolio-card cat-event" data-category="event">
+            <div class="card-header">
+                <div class="card-icon">🎉</div>
+                <div class="card-meta">
+                    <div class="card-category">活动策划</div>
+                    <div class="card-title">Lucky Day 幸运日活动策划</div>
+                    <div class="card-tags">
+                        <span class="card-tag">创意玩法</span>
+                        <span class="card-tag">员工关怀</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">每周一下午揭晓悬念，通过限定条件兑奖、线索寻宝、口令对接等形式提升员工参与感，缓解周一倦怠。</p>
+                <div class="card-highlights">
+                    <div class="highlight-item"><span class="highlight-dot"></span>设计三大趣味玩法，搭建飞书话题圈打卡机制</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>联动 RPG 文化积分制度，增强持续性</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>穿搭主题、数字幸运日等 10+ 种创意条件</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span class="card-date">2026 年</span>
+                <a href="./docs/LuckyDay活动策划.pdf" class="card-action" target="_blank">查看文档</a>
+            </div>
+        </div>
+
+        <div class="portfolio-card cat-event" data-category="event">
+            <div class="card-header">
+                <div class="card-icon">🍲</div>
+                <div class="card-meta">
+                    <div class="card-category">活动策划</div>
+                    <div class="card-title">「干饭迎新年」年夜饭活动</div>
+                    <div class="card-tags">
+                        <span class="card-tag">节日活动</span>
+                        <span class="card-tag">三城联动</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">覆盖北京、广州、深圳三地的年夜饭活动策划，包含场地布置、流程设计、互动环节等完整方案。</p>
+                <div class="card-highlights">
+                    <div class="highlight-item"><span class="highlight-dot"></span>三地同步执行，统一品牌视觉</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>包含流程脚本、物料清单、人员分工</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>节日氛围营造 + 员工关怀结合</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span class="card-date">2025-2026 年</span>
+                <a href="./docs/年夜饭-广州.pdf" class="card-action" target="_blank">查看文档</a>
+            </div>
+        </div>
+
+        <!-- SOP 文档 -->
+        <div class="portfolio-card cat-sop" data-category="sop">
+            <div class="card-header">
+                <div class="card-icon">📖</div>
+                <div class="card-meta">
+                    <div class="card-category">SOP 文档</div>
+                    <div class="card-title">Offsite 团建 SOP 标准流程</div>
+                    <div class="card-tags">
+                        <span class="card-tag">流程标准化</span>
+                        <span class="card-tag">可复用</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">从日程安排到行程准备、活动介绍的全流程标准化文档，包含问卷设计、酒店选择、航班推荐等细节。</p>
+                <div class="card-highlights">
+                    <div class="highlight-item"><span class="highlight-dot"></span>抵达日-会议日-团建日-行程日四段式结构</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>中英文双语文档规范</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>含签证、机票、酒店推荐标准</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span class="card-date">2025 年</span>
+                <a href="./docs/OffsiteSOP.pdf" class="card-action" target="_blank">查看文档</a>
+            </div>
+        </div>
+
+        <div class="portfolio-card cat-sop" data-category="sop">
+            <div class="card-header">
+                <div class="card-icon">💰</div>
+                <div class="card-meta">
+                    <div class="card-category">SOP 文档</div>
+                    <div class="card-title">费用报销 SOP</div>
+                    <div class="card-tags">
+                        <span class="card-tag">财务流程</span>
+                        <span class="card-tag">行政规范</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">覆盖房租、水电费、日常报销的完整财务流程文档，包含 K3 系统操作、发票管理、分摊计算等。</p>
+                <div class="card-highlights">
+                    <div class="highlight-item"><span class="highlight-dot"></span>费用申请 vs 费用报销区分明确</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>多部门分摊计算规范</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>发票类型与附件要求清单</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span class="card-date">2025-2026 年</span>
+                <a href="./docs/费用报销SOP.pdf" class="card-action" target="_blank">查看文档</a>
+            </div>
+        </div>
+
+        <!-- 复盘总结 -->
+        <div class="portfolio-card cat-summary" data-category="summary">
+            <div class="card-header">
+                <div class="card-icon">🔄</div>
+                <div class="card-meta">
+                    <div class="card-category">复盘总结</div>
+                    <div class="card-title">Offsite 团建方案复盘</div>
+                    <div class="card-tags">
+                        <span class="card-tag">问题诊断</span>
+                        <span class="card-tag">经验沉淀</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">从问题挑战、解决办法到经验沉淀的完整复盘，包含飞书文档使用技巧、时间管理等实战心得。</p>
+                <div class="card-highlights">
+                    <div class="highlight-item"><span class="highlight-dot"></span>识别飞书云文档效率瓶颈</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>建立"先框架后填充"工作法</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>困难问题搁置策略，不耽误整体进度</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span class="card-date">2025 年</span>
+                <a href="./docs/Offsite团建方案复盘.pdf" class="card-action" target="_blank">查看文档</a>
+            </div>
+        </div>
+
+        <div class="portfolio-card cat-summary" data-category="summary">
+            <div class="card-header">
+                <div class="card-icon">📈</div>
+                <div class="card-meta">
+                    <div class="card-category">复盘总结</div>
+                    <div class="card-title">11.20 / 12月 / 1月工作总结</div>
+                    <div class="card-tags">
+                        <span class="card-tag">月度复盘</span>
+                        <span class="card-tag">工作方法</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">多月份工作复盘，涵盖任务完成、临时工作处理、跨部门协作等，体现持续迭代的工作方法。</p>
+                <div class="card-highlights">
+                    <div class="highlight-item"><span class="highlight-dot"></span>破冰小游戏分类整理（你画我猜、台词传声筒等）</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>生日祝福流程标准化（时间排序、入职日期计算）</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>视频物料模板统一规范</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span class="card-date">2025-2026 年</span>
+                <a href="./docs/11.20复盘总结.pdf" class="card-action" target="_blank">查看文档</a>
+            </div>
+        </div>
+
+        <div class="portfolio-card cat-summary" data-category="summary">
+            <div class="card-header">
+                <div class="card-icon">🎯</div>
+                <div class="card-meta">
+                    <div class="card-category">复盘总结</div>
+                    <div class="card-title">DAY1 入职总结</div>
+                    <div class="card-tags">
+                        <span class="card-tag">新人成长</span>
+                        <span class="card-tag">工作理解</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">入职首日的深度总结，展现快速学习能力：从部门结构理解到本职工作掌握，再到工作方法论提炼。</p>
+                <div class="card-highlights">
+                    <div class="highlight-item"><span class="highlight-dot"></span>梳理上下游部门协作关系</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>掌握团建/会议/物料/临时四大工作模块</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>提炼"判断优先级→高效解决"工作法</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span class="card-date">2025 年</span>
+                <a href="./docs/DAY1总结.pdf" class="card-action" target="_blank">查看文档</a>
+            </div>
+        </div>
+
+        <!-- 行程方案 -->
+        <div class="portfolio-card cat-plan" data-category="plan">
+            <div class="card-header">
+                <div class="card-icon">✈️</div>
+                <div class="card-meta">
+                    <div class="card-category">行程方案</div>
+                    <div class="card-title">TikTok Eng 冬季团建方案</div>
+                    <div class="card-tags">
+                        <span class="card-tag">三城方案</span>
+                        <span class="card-tag">异地执行</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">覆盖北京、广州、深圳三地的冬季团建完整方案，包含行程安排、活动设计、预算规划等。</p>
+                <div class="card-highlights">
+                    <div class="highlight-item"><span class="highlight-dot"></span>三地差异化方案设计</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>覆盖 22 个三级部门、3 个城市</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>参与率达 95%</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span class="card-date">2025 年</span>
+                <a href="./docs/TikTokEng冬季团建-北京.pdf" class="card-action" target="_blank">查看文档</a>
+            </div>
+        </div>
+
+        <div class="portfolio-card cat-plan" data-category="plan">
+            <div class="card-header">
+                <div class="card-icon">🌟</div>
+                <div class="card-meta">
+                    <div class="card-category">行程方案</div>
+                    <div class="card-title">Global LIVE 2025 Leadership Offsite · 长沙</div>
+                    <div class="card-tags">
+                        <span class="card-tag">高管会议</span>
+                        <span class="card-tag">城市文化</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">高管领导力会议 offsite 方案，融合长沙城市文化特色，包含日程安排、场地推荐、文化体验等。</p>
+                <div class="card-highlights">
+                    <div class="highlight-item"><span class="highlight-dot"></span>城市文化深度融入（岳麓山、橘子洲、文和友）</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>会议日+团建日+自由活动日三段式</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>餐饮、住宿、交通全链路规划</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span class="card-date">2025 年</span>
+                <a href="./docs/GlobalLIVE长沙Offsite.pdf" class="card-action" target="_blank">查看文档</a>
+            </div>
+        </div>
+
+        <!-- 行政统筹 -->
+        <div class="portfolio-card cat-admin" data-category="admin">
+            <div class="card-header">
+                <div class="card-icon">🏆</div>
+                <div class="card-meta">
+                    <div class="card-category">行政统筹</div>
+                    <div class="card-title">TikTok Data Spot Bonus 评优项目</div>
+                    <div class="card-tags">
+                        <span class="card-tag">评优活动</span>
+                        <span class="card-tag">物料制作</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-desc">Q4 季度评优全流程统筹，涵盖 11 个部门 + US Collection，包含物料制作、视频剪辑、信息汇总等。</p>
+                <div class="card-highlights">
+                    <div class="highlight-item"><span class="highlight-dot"></span>11 个部门 + 国际团队信息统筹</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>视频物料：封面页-个人奖-团队奖-结尾页标准化结构</div>
+                    <div class="highlight-item"><span class="highlight-dot"></span>中英文双语内容核对</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span class="card-date">2025 年</span>
+                <a href="./docs/SpotBonus评估项目.pdf" class="card-action" target="_blank">查看文档</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <p>© 2026 戴雯晞 · 企业文化作品集 · 持续更新中</p>
+    </footer>
+
+    <script>
+        // 分类筛选
+        function filterPortfolio(category) {
+            const cards = document.querySelectorAll('.portfolio-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            // 更新按钮状态
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes('全部') && category === 'all') {
+                    btn.classList.add('active');
+                } else if (btn.getAttribute('onclick').includes(category)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 显示/隐藏卡片
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+
+        // 初始化动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.portfolio-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.4s ease';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 80);
+            });
+        });
+    </script>
+</body>
+</html>
