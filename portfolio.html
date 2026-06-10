@@ -151,7 +151,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2026 年</span>
-                <button class="card-action" onclick="openLocalPdf('lucky-day', this)">查看文档</button>
+                <a href="./docs/LuckyDay活动策划.pdf" class="card-action" target="_blank">查看文档</a>
             </div>
         </div>
 
@@ -174,7 +174,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025-2026 年</span>
-                <button class="card-action" onclick="openLocalPdf('new-year-dinner', this)">查看文档</button>
+                <a href="./docs/年夜饭-广州.pdf" class="card-action" target="_blank">查看文档</a>
             </div>
         </div>
 
@@ -198,7 +198,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <button class="card-action" onclick="openLocalPdf('offsite-sop', this)">查看文档</button>
+                <a href="./docs/OffsiteSOP.pdf" class="card-action" target="_blank">查看文档</a>
             </div>
         </div>
 
@@ -221,7 +221,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025-2026 年</span>
-                <button class="card-action" onclick="openLocalPdf('reimbursement-sop', this)">查看文档</button>
+                <a href="./docs/费用报销SOP.pdf" class="card-action" target="_blank">查看文档</a>
             </div>
         </div>
 
@@ -245,7 +245,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <button class="card-action" onclick="openLocalPdf('offsite-review', this)">查看文档</button>
+                <a href="./docs/Offsite团建方案复盘.pdf" class="card-action" target="_blank">查看文档</a>
             </div>
         </div>
 
@@ -268,7 +268,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025-2026 年</span>
-                <button class="card-action" onclick="openLocalPdf('monthly-summary', this)">查看文档</button>
+                <a href="./docs/11.20复盘总结.pdf" class="card-action" target="_blank">查看文档</a>
             </div>
         </div>
 
@@ -291,7 +291,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <button class="card-action" onclick="openLocalPdf('day1-summary', this)">查看文档</button>
+                <a href="./docs/DAY1总结.pdf" class="card-action" target="_blank">查看文档</a>
             </div>
         </div>
 
@@ -315,7 +315,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <button class="card-action" onclick="openLocalPdf('winter-team-building', this)">查看文档</button>
+                <a href="./docs/TikTokEng冬季团建-北京.pdf" class="card-action" target="_blank">查看文档</a>
             </div>
         </div>
 
@@ -338,7 +338,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <button class="card-action" onclick="openLocalPdf('global-live-offsite', this)">查看文档</button>
+                <a href="./docs/GlobalLIVE长沙Offsite.pdf" class="card-action" target="_blank">查看文档</a>
             </div>
         </div>
 
@@ -362,7 +362,7 @@
             </div>
             <div class="card-footer">
                 <span class="card-date">2025 年</span>
-                <button class="card-action" onclick="openLocalPdf('spot-bonus', this)">查看文档</button>
+                <a href="./docs/SpotBonus评估项目.pdf" class="card-action" target="_blank">查看文档</a>
             </div>
         </div>
     </div>
@@ -372,39 +372,6 @@
     </footer>
 
     <script>
-        // 存储每个文档对应的文件
-        const docFiles = {};
-
-        function openLocalPdf(docId, btnElement) {
-            // 创建临时的文件输入框
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = '.pdf,application/pdf';
-            fileInput.style.display = 'none';
-            
-            fileInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (file && file.type === 'application/pdf') {
-                    // 保存文件引用
-                    docFiles[docId] = file;
-                    // 创建临时URL并在新窗口打开
-                    const url = URL.createObjectURL(file);
-                    window.open(url, '_blank');
-                    // 更新按钮状态为"已查看"
-                    btnElement.classList.add('uploaded');
-                    btnElement.textContent = '已查看 ✓';
-                } else if (file) {
-                    alert('请选择 PDF 文件');
-                }
-                // 移除临时input
-                document.body.removeChild(fileInput);
-            });
-            
-            // 触发文件选择
-            document.body.appendChild(fileInput);
-            fileInput.click();
-        }
-
         // 筛选功能
         function filterPortfolio(category) {
             const cards = document.querySelectorAll('.portfolio-card');
