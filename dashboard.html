@@ -4368,75 +4368,226 @@
             const currentTasksArr = getCurrentTasks();
             const active = currentTasksArr.filter(t => t.status !== 'archived');
 
-            // 本周新增（dueDate 在本周内）
-            const thisWeekAdded = active.filter(t => t.dueDate >= weekStartStr && t.dueDate <= weekEndStr);
             // 本周完成
             const thisWeekDone = active.filter(t => t.completedDate >= weekStartStr && t.completedDate <= weekEndStr);
-            // 本周超期
-            const thisWeekOverdue = active.filter(t => t.status !== 'done' && t.dueDate && t.dueDate >= weekStartStr && t.dueDate <= weekEndStr && t.dueDate < today);
-
-            // 各模块完成情况
-            const catStats = CATEGORIES.map(cat => {
-                const catTasks = active.filter(t => t.category === cat.key);
-                const total = catTasks.length;
-                const done = catTasks.filter(t => t.status === 'done').length;
-                const overdue = catTasks.filter(t => t.status !== 'done' && t.dueDate && t.dueDate < today).length;
-                return { ...cat, total, done, overdue, rate: total > 0 ? Math.round(done / total * 100) : 0 };
-            });
-
+            // 进行中
+            const inProgress = active.filter(t => t.status === 'in-progress');
+            // 待开始
+            const todoTasks = active.filter(t => t.status === 'todo');
             // 延期风险任务
             const riskTasks = active.filter(t => t.status !== 'done' && t.dueDate && t.dueDate < today);
+            // 已完成
+            const doneTasks = active.filter(t => t.status === 'done');
 
-            // 下周计划（待开始 + 进行中）
-            const nextWeekPlan = active.filter(t => t.status === 'todo' || t.status === 'in-progress');
+            let report = '';
+            const line = '='.repeat(80);
+            const sep = '-'.repeat(80);
 
-            const dirLabel = currentDirection === 'recruit' ? '招聘管理' : '企业文化';
-            let md = `# 📊 ${dirLabel}工作周报\n\n`;
-            md += `> 生成时间：${today}\n`;
-            md += `> 统计周期：${weekStartStr} 至 ${weekEndStr}\n\n`;
+            if (currentDirection === 'recruit') {
+                // ========== 招聘方向周报 ==========
+                const resumeTasks = active.filter(t => t.category === '简历筛选');
+                const interviewTasks = active.filter(t => t.category === '面试邀约');
+                const offerTasks = active.filter(t => t.category === 'Offer跟进');
+                const onboardTasks = active.filter(t => t.category === '入职办理');
+                const channelTasks = active.filter(t => t.category === '渠道管理');
 
-            md += `## 一、本周工作总结\n\n`;
-            md += `- **本周新增任务**：${thisWeekAdded.length} 项\n`;
-            md += `- **本周完成任务**：${thisWeekDone.length} 项\n`;
-            md += `- **本周超期任务**：${thisWeekOverdue.length} 项\n\n`;
+                report += line + '\n';
+                report += '                         人力资源部 - 招聘工作周报\n';
+                report += line + '\n\n';
+                report += '  汇报人：戴雯晞\n';
+                report += '  汇报周期：' + weekStartStr + ' 至 ' + weekEndStr + '\n';
+                report += '  生成日期：' + today + '\n\n';
 
-            md += `## 二、各模块完成情况\n\n`;
-            md += `| 模块 | 总数 | 已完成 | 完成率 | 超期数 |\n`;
-            md += `|------|------|--------|--------|--------|\n`;
-            catStats.forEach(c => {
-                md += `| ${c.icon} ${c.key} | ${c.total} | ${c.done} | ${c.rate}% | ${c.overdue} |\n`;
-            });
-            md += `\n`;
+                report += line + '\n';
+                report += '一、本周招聘数据概览\n';
+                report += line + '\n\n';
+                report += '  简历筛选完成：' + resumeTasks.filter(t => t.status === 'done').length + ' 份\n';
+                report += '  面试安排完成：' + interviewTasks.filter(t => t.status === 'done').length + ' 场\n';
+                report += '  Offer 发放：' + offerTasks.filter(t => t.status === 'done').length + ' 份\n';
+                report += '  成功入职：' + onboardTasks.filter(t => t.status === 'done').length + ' 人\n';
+                report += '  在招岗位数：' + active.filter(t => t.category === '简历筛选' || t.category === '面试邀约').length + ' 个\n';
+                report += '  整体完成率：' + (doneTasks.length > 0 ? Math.round(doneTasks.length / active.length * 100) : 0) + '%\n\n';
 
-            md += `## 三、延期风险任务列表\n\n`;
-            if (riskTasks.length === 0) {
-                md += `✅ 暂无延期风险任务\n\n`;
-            } else {
-                md += `| 任务名称 | 分类 | 截止日期 | 延迟天数 |\n`;
-                md += `|----------|------|----------|----------|\n`;
-                riskTasks.forEach(t => {
-                    const days = Math.ceil((todayObj - new Date(t.dueDate)) / 86400000);
-                    md += `| ${t.name} | ${t.category} | ${t.dueDate} | ${days}天 |\n`;
+                report += line + '\n';
+                report += '二、招聘各模块进展\n';
+                report += line + '\n\n';
+                const recruitCats = ['简历筛选', '面试邀约', 'Offer跟进', '入职办理', '渠道管理', '招聘数据'];
+                recruitCats.forEach(cat => {
+                    const catTasks = active.filter(t => t.category === cat);
+                    if (catTasks.length > 0) {
+                        const done = catTasks.filter(t => t.status === 'done').length;
+                        const doing = catTasks.filter(t => t.status === 'in-progress').length;
+                        report += '  【' + cat + '】\n';
+                        report += '    已完成：' + done + ' 项  |  进行中：' + doing + ' 项\n';
+                        catTasks.forEach(t => {
+                            const statusMark = t.status === 'done' ? '✓' : t.status === 'in-progress' ? '△' : '○';
+                            report += '    ' + statusMark + ' ' + t.name;
+                            if (t.dueDate) report += '  (截止：' + t.dueDate + ')';
+                            report += '\n';
+                        });
+                        report += '\n';
+                    }
                 });
-                md += `\n`;
+
+                report += line + '\n';
+                report += '三、在招岗位进度跟踪\n';
+                report += line + '\n\n';
+                const recruiting = active.filter(t => t.category === '简历筛选' || t.category === '面试邀约' || t.category === 'Offer跟进');
+                if (recruiting.length === 0) {
+                    report += '  暂无在招岗位跟踪记录\n\n';
+                } else {
+                    report += '  序号  岗位/候选人        当前阶段          状态      备注\n';
+                    report += sep + '\n';
+                    recruiting.forEach((t, i) => {
+                        const stage = t.category;
+                        const status = t.status === 'done' ? '已完成' : t.status === 'in-progress' ? '推进中' : '待开始';
+                        report += '  ' + String(i + 1).padStart(2) + '    ' + t.name.substring(0, 16).padEnd(16) + '  ' + stage.padEnd(14) + '  ' + status.padEnd(8) + '\n';
+                    });
+                    report += '\n';
+                }
+
+                report += line + '\n';
+                report += '四、本周重点工作\n';
+                report += line + '\n\n';
+                if (thisWeekDone.length > 0) {
+                    report += '  【已完成】\n';
+                    thisWeekDone.forEach(t => {
+                        report += '    ✓ ' + t.name + '  [' + t.category + ']\n';
+                    });
+                    report += '\n';
+                }
+                if (inProgress.length > 0) {
+                    report += '  【进行中】\n';
+                    inProgress.forEach(t => {
+                        report += '    △ ' + t.name + '  [' + t.category + ']';
+                        if (t.dueDate) report += '  (截止：' + t.dueDate + ')';
+                        report += '\n';
+                    });
+                    report += '\n';
+                }
+
+                report += line + '\n';
+                report += '五、延期风险预警\n';
+                report += line + '\n\n';
+                if (riskTasks.length === 0) {
+                    report += '  ✅ 暂无延期风险事项\n\n';
+                } else {
+                    riskTasks.forEach(t => {
+                        const days = Math.ceil((todayObj - new Date(t.dueDate)) / 86400000);
+                        report += '  ⚠ ' + t.name + '  [' + t.category + ']  已延期 ' + days + ' 天\n';
+                    });
+                    report += '\n';
+                }
+
+                report += line + '\n';
+                report += '六、下周工作计划\n';
+                report += line + '\n\n';
+                const nextPlan = active.filter(t => t.status === 'todo' || t.status === 'in-progress');
+                if (nextPlan.length === 0) {
+                    report += '  暂无待执行的任务\n\n';
+                } else {
+                    nextPlan.forEach((t, i) => {
+                        const status = t.status === 'todo' ? '【待开始】' : '【进行中】';
+                        report += '  ' + (i + 1) + '. ' + t.name + '  ' + status + '  [' + t.category + ']\n';
+                    });
+                    report += '\n';
+                }
+
+                report += line + '\n';
+                report += '备注：本报告由人力资源工作看板自动生成\n';
+                report += line + '\n';
+
+            } else {
+                // ========== 企业文化方向周报 ==========
+                report += line + '\n';
+                report += '                       人力资源部 - 企业文化工作周报\n';
+                report += line + '\n\n';
+                report += '  汇报人：戴雯晞\n';
+                report += '  汇报周期：' + weekStartStr + ' 至 ' + weekEndStr + '\n';
+                report += '  生成日期：' + today + '\n\n';
+
+                report += line + '\n';
+                report += '一、本周工作概览\n';
+                report += line + '\n\n';
+                report += '  本周完成任务：' + thisWeekDone.length + ' 项\n';
+                report += '  进行中任务：' + inProgress.length + ' 项\n';
+                report += '  待开始任务：' + todoTasks.length + ' 项\n';
+                report += '  整体完成率：' + (active.length > 0 ? Math.round(doneTasks.length / active.length * 100) : 0) + '%\n\n';
+
+                report += line + '\n';
+                report += '二、各模块工作进展\n';
+                report += line + '\n\n';
+                const cultureCats = ['文化活动', '员工关怀', '品牌传播', '视觉设计', '培训发展', '荣誉激励'];
+                cultureCats.forEach(cat => {
+                    const catTasks = active.filter(t => t.category === cat);
+                    if (catTasks.length > 0) {
+                        const done = catTasks.filter(t => t.status === 'done').length;
+                        const doing = catTasks.filter(t => t.status === 'in-progress').length;
+                        report += '  【' + cat + '】\n';
+                        report += '    已完成：' + done + ' 项  |  进行中：' + doing + ' 项\n';
+                        catTasks.forEach(t => {
+                            const statusMark = t.status === 'done' ? '✓' : t.status === 'in-progress' ? '△' : '○';
+                            report += '    ' + statusMark + ' ' + t.name;
+                            if (t.dueDate) report += '  (截止：' + t.dueDate + ')';
+                            report += '\n';
+                        });
+                        report += '\n';
+                    }
+                });
+
+                report += line + '\n';
+                report += '三、本周重点事项\n';
+                report += line + '\n\n';
+                if (thisWeekDone.length > 0) {
+                    report += '  【已完成事项】\n';
+                    thisWeekDone.forEach(t => {
+                        report += '    ✓ ' + t.name + '  [' + t.category + ']\n';
+                    });
+                    report += '\n';
+                }
+                if (inProgress.length > 0) {
+                    report += '  【进行中事项】\n';
+                    inProgress.forEach(t => {
+                        report += '    △ ' + t.name + '  [' + t.category + ']';
+                        if (t.dueDate) report += '  (截止：' + t.dueDate + ')';
+                        report += '\n';
+                    });
+                    report += '\n';
+                }
+
+                report += line + '\n';
+                report += '四、问题与风险\n';
+                report += line + '\n\n';
+                if (riskTasks.length === 0) {
+                    report += '  ✅ 暂无延期风险事项\n\n';
+                } else {
+                    riskTasks.forEach(t => {
+                        const days = Math.ceil((todayObj - new Date(t.dueDate)) / 86400000);
+                        report += '  ⚠ ' + t.name + '  [' + t.category + ']  已延期 ' + days + ' 天\n';
+                    });
+                    report += '\n';
+                }
+
+                report += line + '\n';
+                report += '五、下周工作计划\n';
+                report += line + '\n\n';
+                const nextPlan = active.filter(t => t.status === 'todo' || t.status === 'in-progress');
+                if (nextPlan.length === 0) {
+                    report += '  暂无待执行的任务\n\n';
+                } else {
+                    nextPlan.forEach((t, i) => {
+                        const status = t.status === 'todo' ? '【待开始】' : '【进行中】';
+                        report += '  ' + (i + 1) + '. ' + t.name + '  ' + status + '  [' + t.category + ']\n';
+                    });
+                    report += '\n';
+                }
+
+                report += line + '\n';
+                report += '备注：本报告由人力资源工作看板自动生成\n';
+                report += line + '\n';
             }
 
-            md += `## 四、下周工作计划\n\n`;
-            if (nextWeekPlan.length === 0) {
-                md += `暂无待执行的任务\n\n`;
-            } else {
-                md += `| 任务名称 | 分类 | 状态 | 截止日期 |\n`;
-                md += `|----------|------|------|----------|\n`;
-                nextWeekPlan.forEach(t => {
-                    md += `| ${t.name} | ${t.category} | ${statusLabel(t.status)} | ${t.dueDate || '-'} |\n`;
-                });
-                md += `\n`;
-            }
-
-            md += `---\n`;
-            md += `*本报告由人力资源工作看板自动生成*\n`;
-
-            downloadBlob(md, `工作周报_${weekStartStr}.md`, 'text/markdown');
+            downloadBlob(report, '工作周报_' + (currentDirection === 'recruit' ? '招聘方向' : '企业文化方向') + '_' + weekStartStr + '.txt', 'text/plain;charset=utf-8');
         }
 
         // ==================== 方向切换 ====================
