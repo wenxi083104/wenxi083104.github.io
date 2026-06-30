@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>企业文化工作看板</title>
+    <title>人力资源工作看板</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -2063,6 +2063,50 @@
             border: 2px solid var(--danger);
         }
 
+        /* ========== 方向切换Tab ========== */
+        .direction-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 0 32px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-light);
+            padding-top: 12px;
+            padding-bottom: 12px;
+            justify-content: center;
+        }
+
+        .direction-tab {
+            padding: 10px 32px;
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .direction-tab:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .direction-tab.active[data-direction="recruit"] {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+        }
+
+        .direction-tab.active[data-direction="culture"] {
+            background: #059669;
+            border-color: #059669;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(5,150,105,0.3);
+        }
+
         /* ========== 空状态 ========== */
         .empty-state {
             text-align: center;
@@ -2080,7 +2124,7 @@
 <body>
     <!-- 顶部导航 -->
     <nav class="top-nav">
-        <div class="nav-brand">🏢 企业文化工作看板</div>
+        <div class="nav-brand">🏢 人力资源工作看板</div>
         <div class="nav-links">
             <a href="./project.html">📁 项目介绍</a>
             <a href="./index.html">🏠 个人空间</a>
@@ -2098,6 +2142,12 @@
             <a href="./notice.html">📝 通知</a>
         </div>
     </nav>
+
+    <!-- 方向切换Tab -->
+    <div class="direction-tabs" id="directionTabs">
+        <button class="direction-tab" data-direction="recruit" onclick="switchDirection('recruit')">📋 招聘管理</button>
+        <button class="direction-tab active" data-direction="culture" onclick="switchDirection('culture')">🎯 企业文化</button>
+    </div>
 
     <div class="main-container">
         <!-- 第一行：目标 + KPI -->
@@ -2259,12 +2309,6 @@
                         <label class="form-label">分类</label>
                         <input type="text" class="form-input" id="detailCategory" list="categoryList" placeholder="选择或输入">
                         <datalist id="categoryList">
-                            <option value="文化活动">
-                            <option value="员工关怀">
-                            <option value="品牌传播">
-                            <option value="视觉设计">
-                            <option value="培训发展">
-                            <option value="荣誉激励">
                         </datalist>
                     </div>
                     <div class="form-group">
@@ -2544,8 +2588,135 @@
             }
         ];
 
-        // 全局 tasks 数组
+        // 招聘方向默认示例任务
+        const defaultRecruitTasks = [
+            {
+                id: "r1",
+                name: "BOSS直聘渠道-运营专员岗位简历筛选",
+                type: "task",
+                category: "简历筛选",
+                priority: "high",
+                urgency: "urgent",
+                status: "in-progress",
+                dueDate: getFutureDate(2),
+                completedDate: null,
+                blocked: false,
+                tags: ["#BOSS直聘", "#运营专员", "#简历筛选"],
+                parentId: null,
+                milestone: false,
+                order: 0,
+                detail: { communications: [], achievements: [], changeLogs: [], doc: '' }
+            },
+            {
+                id: "r2",
+                name: "产品经理候选人-二面安排",
+                type: "task",
+                category: "面试邀约",
+                priority: "high",
+                urgency: "urgent",
+                status: "todo",
+                dueDate: getFutureDate(1),
+                completedDate: null,
+                blocked: false,
+                tags: ["#产品经理", "#二面", "#面试"],
+                parentId: null,
+                milestone: false,
+                order: 1,
+                detail: { communications: [], achievements: [], changeLogs: [], doc: '' }
+            },
+            {
+                id: "r3",
+                name: "设计师岗位-offer谈判中",
+                type: "task",
+                category: "Offer跟进",
+                priority: "high",
+                urgency: "normal",
+                status: "in-progress",
+                dueDate: getFutureDate(5),
+                completedDate: null,
+                blocked: false,
+                tags: ["#设计师", "#offer", "#谈判"],
+                parentId: null,
+                milestone: true,
+                order: 2,
+                detail: { communications: [], achievements: [], changeLogs: [], doc: '' }
+            },
+            {
+                id: "r4",
+                name: "新员工张三-入职材料收集",
+                type: "task",
+                category: "入职办理",
+                priority: "medium",
+                urgency: "normal",
+                status: "done",
+                dueDate: getFutureDate(-1),
+                completedDate: getFutureDate(-1),
+                blocked: false,
+                tags: ["#入职", "#张三", "#材料收集"],
+                parentId: null,
+                milestone: false,
+                order: 3,
+                detail: { communications: [], achievements: [], changeLogs: [], doc: '' }
+            },
+            {
+                id: "r5",
+                name: "LinkedIn渠道拓展",
+                type: "project",
+                category: "渠道管理",
+                priority: "medium",
+                urgency: "normal",
+                status: "in-progress",
+                dueDate: getFutureDate(10),
+                completedDate: null,
+                blocked: false,
+                tags: ["#LinkedIn", "#渠道拓展"],
+                parentId: null,
+                milestone: true,
+                order: 4,
+                detail: { communications: [], achievements: [], changeLogs: [], doc: '' }
+            },
+            {
+                id: "r6",
+                name: "字节跳动内推-HRBP岗位",
+                type: "task",
+                category: "简历筛选",
+                priority: "high",
+                urgency: "urgent",
+                status: "todo",
+                dueDate: getFutureDate(3),
+                completedDate: null,
+                blocked: false,
+                tags: ["#字节跳动", "#内推", "#HRBP"],
+                parentId: null,
+                milestone: false,
+                order: 5,
+                detail: { communications: [], achievements: [], changeLogs: [], doc: '' }
+            },
+            {
+                id: "r7",
+                name: "6月招聘漏斗分析报告",
+                type: "project",
+                category: "招聘数据",
+                priority: "high",
+                urgency: "normal",
+                status: "done",
+                dueDate: getFutureDate(-2),
+                completedDate: getFutureDate(-2),
+                blocked: false,
+                tags: ["#招聘漏斗", "#月度报告", "#数据分析"],
+                parentId: null,
+                milestone: true,
+                order: 6,
+                detail: { communications: [], achievements: [], changeLogs: [], doc: '' }
+            }
+        ];
+
+        // 当前活跃方向
+        let currentDirection = 'culture'; // 'recruit' 或 'culture'
+
+        // 全局 tasks 数组（根据方向动态切换）
         let tasks = [];
+        let recruitTasks = [];
 
         // 排序状态
         let sortState = {
@@ -2560,30 +2731,76 @@
             return d.toISOString().split('T')[0];
         }
 
-        // 保存 tasks 到 localStorage
-        function saveTasks() {
-            localStorage.setItem('workboard_tasks', JSON.stringify(tasks));
-            console.log('✅ Tasks saved to localStorage');
+        // 获取当前方向的任务数组引用
+        function getCurrentTasks() {
+            return currentDirection === 'recruit' ? recruitTasks : tasks;
         }
 
-        // 从 localStorage 读取 tasks，若无则使用默认示例
+        // 保存 tasks 到 localStorage（根据方向）
+        function saveTasks() {
+            if (currentDirection === 'recruit') {
+                localStorage.setItem('hr_tasks_recruit', JSON.stringify(recruitTasks));
+            } else {
+                localStorage.setItem('hr_tasks_culture', JSON.stringify(tasks));
+            }
+            console.log('✅ Tasks saved to localStorage for direction:', currentDirection);
+        }
+
+        // 从 localStorage 读取 tasks，若无则使用默认示例（双方向）
         function loadTasks() {
-            const stored = localStorage.getItem('workboard_tasks');
-            if (stored) {
+            // 加载企业文化方向
+            const storedCulture = localStorage.getItem('hr_tasks_culture');
+            if (storedCulture) {
                 try {
-                    tasks = JSON.parse(stored);
-                    console.log('📦 Tasks loaded from localStorage');
+                    tasks = JSON.parse(storedCulture);
+                    console.log('📦 Culture tasks loaded from localStorage');
                 } catch (e) {
-                    console.warn('⚠️ Failed to parse stored tasks, using defaults');
+                    console.warn('⚠️ Failed to parse stored culture tasks, using defaults');
                     tasks = JSON.parse(JSON.stringify(defaultTasks));
-                    saveTasks();
                 }
             } else {
-                tasks = JSON.parse(JSON.stringify(defaultTasks));
-                saveTasks();
-                console.log('🆕 No stored tasks found, initialized with defaults');
+                // 兼容旧key
+                const oldStored = localStorage.getItem('workboard_tasks');
+                if (oldStored) {
+                    try {
+                        tasks = JSON.parse(oldStored);
+                        console.log('📦 Culture tasks loaded from old localStorage key');
+                    } catch (e) {
+                        tasks = JSON.parse(JSON.stringify(defaultTasks));
+                    }
+                } else {
+                    tasks = JSON.parse(JSON.stringify(defaultTasks));
+                }
             }
-            console.log('Current tasks:', tasks);
+
+            // 加载招聘方向
+            const storedRecruit = localStorage.getItem('hr_tasks_recruit');
+            if (storedRecruit) {
+                try {
+                    recruitTasks = JSON.parse(storedRecruit);
+                    console.log('📦 Recruit tasks loaded from localStorage');
+                } catch (e) {
+                    console.warn('⚠️ Failed to parse stored recruit tasks, using defaults');
+                    recruitTasks = JSON.parse(JSON.stringify(defaultRecruitTasks));
+                }
+            } else {
+                recruitTasks = JSON.parse(JSON.stringify(defaultRecruitTasks));
+            }
+
+            // 保存到新key
+            if (!localStorage.getItem('hr_tasks_culture')) {
+                localStorage.setItem('hr_tasks_culture', JSON.stringify(tasks));
+            }
+            localStorage.setItem('hr_tasks_recruit', JSON.stringify(recruitTasks));
+
+            // 从localStorage恢复方向
+            const savedDirection = localStorage.getItem('hr_current_direction');
+            if (savedDirection === 'recruit' || savedDirection === 'culture') {
+                currentDirection = savedDirection;
+            }
+
+            console.log('Current direction:', currentDirection);
+            console.log('Current tasks:', getCurrentTasks());
         }
 
         // ==================== 表格渲染 ====================
@@ -2714,8 +2931,10 @@
             const container = document.getElementById('tableContainer');
             if (!container) return;
             
+            const currentTasks = getCurrentTasks();
+            
             // 筛选并排序
-            let filtered = filterTasks(tasks);
+            let filtered = filterTasks(currentTasks);
             filtered = sortTasks(filtered);
             
             // 空状态
@@ -2799,7 +3018,7 @@
         function startInlineEdit(cell) {
             const field = cell.dataset.field;
             const taskId = cell.closest('tr').dataset.taskId;
-            const task = tasks.find(t => t.id === taskId);
+            const task = getCurrentTasks().find(t => t.id === taskId);
             if (!task) return;
             
             // 实际完成日期列不可编辑（根据需求）
@@ -2851,7 +3070,9 @@
             } else if (field === 'category') {
                 editor = document.createElement('select');
                 editor.className = 'cell-editor-select';
-                const categories = ['文化活动', '员工关怀', '品牌传播', '视觉设计', '培训发展', '荣誉激励'];
+                const categories = currentDirection === 'recruit'
+                    ? ['简历筛选', '面试邀约', 'Offer跟进', '入职办理', '招聘数据', '渠道管理']
+                    : ['文化活动', '员工关怀', '品牌传播', '视觉设计', '培训发展', '荣誉激励'];
                 editor.innerHTML = categories.map(c => 
                     `<option value="${c}" ${currentValue === c ? 'selected' : ''}>${c}</option>`
                 ).join('');
@@ -2905,9 +3126,14 @@
         // ==================== KPI 自动计算 ====================
 
         function updateKPI() {
+            const currentTasks = getCurrentTasks();
             // 排除归档任务
-            const active = tasks.filter(t => t.status !== 'archived');
-            const total = active.length;
+            const active = currentTasks.filter(t => t.status !== 'archived');
+
+            // 根据方向更新KPI标签
+            const kpiLabels = currentDirection === 'recruit'
+                ? ['本月招聘目标', '简历处理量', '面试安排', 'Offer发放', '入职完成']
+                : ['任务总数', '整体完成率', '按时完成率', '延期率'];
 
             // 已完成任务
             const doneTasks = active.filter(t => t.status === 'done');
@@ -2926,13 +3152,19 @@
             }).length;
 
             // 计算百分比
-            const doneRate = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+            const doneRate = active.length > 0 ? Math.round((doneCount / active.length) * 100) : 0;
             const onTimeRate = doneCount > 0 ? Math.round((onTimeCount / doneCount) * 100) : 0;
-            const overdueRate = total > 0 ? Math.round((overdueCount / total) * 100) : 0;
+            const overdueRate = active.length > 0 ? Math.round((overdueCount / active.length) * 100) : 0;
+
+            // 更新 KPI 标签
+            const kpiLabelEls = document.querySelectorAll('.kpi-label');
+            kpiLabelEls.forEach((el, i) => {
+                if (kpiLabels[i]) el.textContent = kpiLabels[i];
+            });
 
             // 更新 DOM
-            document.getElementById('kpiTotal').textContent = total;
-            document.getElementById('kpiTotalBar').style.width = Math.min(total * 10, 100) + '%';
+            document.getElementById('kpiTotal').textContent = active.length;
+            document.getElementById('kpiTotalBar').style.width = Math.min(active.length * 10, 100) + '%';
 
             document.getElementById('kpiDone').textContent = doneRate + '%';
             document.getElementById('kpiDoneBar').style.width = doneRate + '%';
@@ -2946,19 +3178,23 @@
 
         // ==================== 本月目标持久化 ====================
 
+        function getGoalKey() {
+            return currentDirection === 'recruit' ? 'workboard_goal_recruit' : 'workboard_goal_culture';
+        }
+
         function initGoal() {
             const goalInput = document.getElementById('goalInput');
             if (!goalInput) return;
 
             // 从 localStorage 恢复
-            const saved = localStorage.getItem('workboard_goal');
+            const saved = localStorage.getItem(getGoalKey());
             if (saved) {
                 goalInput.value = saved;
             }
 
             // 修改后自动保存
             goalInput.addEventListener('input', debounce(function() {
-                localStorage.setItem('workboard_goal', goalInput.value);
+                localStorage.setItem(getGoalKey(), goalInput.value);
             }, 300));
         }
 
@@ -2982,11 +3218,13 @@
             const today = new Date().toISOString().split('T')[0];
             const nextWeek = new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0];
             const newId = 'task_' + Date.now();
+            const currentTasksArr = getCurrentTasks();
+            const defaultCategory = currentDirection === 'recruit' ? '简历筛选' : '文化活动';
             const newTask = {
                 id: newId,
                 name: '',
                 type: 'task',
-                category: '文化活动',
+                category: defaultCategory,
                 priority: 'medium',
                 urgency: 'normal',
                 status: 'todo',
@@ -2996,15 +3234,15 @@
                 tags: [],
                 parentId: null,
                 milestone: false,
-                order: tasks.length,
+                order: currentTasksArr.length,
                 detail: { communications: [], achievements: [], changeLogs: [], doc: '' }
             };
-            tasks.push(newTask);
+            currentTasksArr.push(newTask);
             currentDetailTaskId = newId;
 
             // 填充表单
             document.getElementById('detailName').value = '';
-            document.getElementById('detailCategory').value = '文化活动';
+            document.getElementById('detailCategory').value = defaultCategory;
             document.getElementById('detailPriority').value = 'medium';
             document.getElementById('detailUrgency').value = 'normal';
             document.getElementById('detailStatus').value = 'todo';
@@ -3029,7 +3267,7 @@
         }
 
         function openTaskDetail(taskId) {
-            const task = tasks.find(t => t.id === taskId);
+            const task = getCurrentTasks().find(t => t.id === taskId);
             if (!task) return;
             currentDetailTaskId = taskId;
             ensureDetail(task);
@@ -3083,7 +3321,7 @@
         }
 
         function removeDetailItem(listId, idx) {
-            const task = tasks.find(t => t.id === currentDetailTaskId);
+            const task = getCurrentTasks().find(t => t.id === currentDetailTaskId);
             if (!task) return;
             ensureDetail(task);
             let arr;
@@ -3108,7 +3346,7 @@
         function confirmAddComm() {
             const content = document.getElementById('commContent').value.trim();
             if (!content) return;
-            const task = tasks.find(t => t.id === currentDetailTaskId);
+            const task = getCurrentTasks().find(t => t.id === currentDetailTaskId);
             if (!task) return;
             ensureDetail(task);
             task.detail.communications.push({ date: document.getElementById('commDate').value, content });
@@ -3129,7 +3367,7 @@
         function confirmAddAch() {
             const content = document.getElementById('achContent').value.trim();
             if (!content) return;
-            const task = tasks.find(t => t.id === currentDetailTaskId);
+            const task = getCurrentTasks().find(t => t.id === currentDetailTaskId);
             if (!task) return;
             ensureDetail(task);
             task.detail.achievements.push(content);
@@ -3150,7 +3388,7 @@
         function confirmAddLog() {
             const content = document.getElementById('logContent').value.trim();
             if (!content) return;
-            const task = tasks.find(t => t.id === currentDetailTaskId);
+            const task = getCurrentTasks().find(t => t.id === currentDetailTaskId);
             if (!task) return;
             ensureDetail(task);
             const now = new Date();
@@ -3162,14 +3400,19 @@
 
         // 保存任务详情
         function saveTaskDetail() {
-            const task = tasks.find(t => t.id === currentDetailTaskId);
+            const currentTasksArr = getCurrentTasks();
+            const task = currentTasksArr.find(t => t.id === currentDetailTaskId);
             if (!task) return;
             ensureDetail(task);
 
             const nameVal = document.getElementById('detailName').value.trim();
             // 如果名称为空，视为取消新增，删除该任务
             if (!nameVal) {
-                tasks = tasks.filter(t => t.id !== currentDetailTaskId);
+                if (currentDirection === 'recruit') {
+                    recruitTasks = recruitTasks.filter(t => t.id !== currentDetailTaskId);
+                } else {
+                    tasks = tasks.filter(t => t.id !== currentDetailTaskId);
+                }
                 saveTasks();
                 closeTaskDetail();
                 refreshAll();
@@ -3215,7 +3458,11 @@
         function deleteTask() {
             if (!currentDetailTaskId) return;
             if (!confirm('确定要删除这个任务吗？此操作不可撤销。')) return;
-            tasks = tasks.filter(t => t.id !== currentDetailTaskId);
+            if (currentDirection === 'recruit') {
+                recruitTasks = recruitTasks.filter(t => t.id !== currentDetailTaskId);
+            } else {
+                tasks = tasks.filter(t => t.id !== currentDetailTaskId);
+            }
             saveTasks();
             closeTaskDetail();
             refreshAll();
@@ -3247,8 +3494,10 @@
             const container = document.getElementById('kanbanContainer');
             if (!container) return;
 
+            const currentTasks = getCurrentTasks();
+
             // 过滤 project 类型且非归档
-            let projects = tasks.filter(t => t.type === 'project' && t.status !== 'archived');
+            let projects = currentTasks.filter(t => t.type === 'project' && t.status !== 'archived');
 
             // 按 category 分组
             const categories = [...new Set(projects.map(t => t.category))].sort();
@@ -3326,7 +3575,8 @@
                         const newCategory = evt.to.dataset.category;
                         const oldCategory = evt.from.dataset.category;
                         const taskId = evt.item.dataset.taskId;
-                        const task = tasks.find(t => t.id === taskId);
+                        const currentTasksArr = getCurrentTasks();
+                        const task = currentTasksArr.find(t => t.id === taskId);
                         if (!task) return;
 
                         // 更新 category
@@ -3340,7 +3590,7 @@
                             .map(child => child.dataset.taskId);
 
                         newOrderIds.forEach((id, idx) => {
-                            const t = tasks.find(x => x.id === id);
+                            const t = currentTasksArr.find(x => x.id === id);
                             if (t) t.order = idx;
                         });
 
@@ -3355,6 +3605,7 @@
         // ==================== 风险预警 ====================
 
         function updateRisks() {
+            const currentTasks = getCurrentTasks();
             const today = new Date();
             const todayStr = today.toISOString().split('T')[0];
             // 计算 today+1 和 today+3 的日期字符串
@@ -3363,7 +3614,7 @@
             const soonStart = d1.toISOString().split('T')[0];
             const soonEnd = d3.toISOString().split('T')[0];
 
-            const active = tasks.filter(t => t.status !== 'archived');
+            const active = currentTasks.filter(t => t.status !== 'archived');
 
             // 已超期：未完成 且 dueDate < 今天
             const overdue = active.filter(t => t.status !== 'done' && t.dueDate && t.dueDate < todayStr);
@@ -3449,10 +3700,11 @@
             const statsEl = document.getElementById('todoStats');
             if (!container) return;
 
+            const currentTasks = getCurrentTasks();
             const today = new Date().toISOString().split('T')[0];
 
             // 基础过滤：type === "task" 且 status !== "archived"
-            let filtered = tasks.filter(t => t.type === 'task' && t.status !== 'archived');
+            let filtered = currentTasks.filter(t => t.type === 'task' && t.status !== 'archived');
 
             // 视图过滤
             if (todoFilter === 'in-progress') {
@@ -3474,8 +3726,8 @@
             });
 
             // 今日统计
-            const todayDone = tasks.filter(t => t.completedDate === today).length;
-            const todayDue = tasks.filter(t => t.dueDate === today && t.status !== 'archived').length;
+            const todayDone = currentTasks.filter(t => t.completedDate === today).length;
+            const todayDue = currentTasks.filter(t => t.dueDate === today && t.status !== 'archived').length;
             const todayRate = todayDue > 0 ? Math.round((todayDone / todayDue) * 100) : (todayDone > 0 ? 100 : 0);
 
             statsEl.innerHTML = `
@@ -3518,7 +3770,8 @@
             container.querySelectorAll('.todo-checkbox').forEach(cb => {
                 cb.addEventListener('change', function() {
                     const taskId = this.closest('.todo-item').dataset.taskId;
-                    const task = tasks.find(t => t.id === taskId);
+                    const currentTasksArr = getCurrentTasks();
+                    const task = currentTasksArr.find(t => t.id === taskId);
                     if (!task) return;
 
                     if (this.checked) {
@@ -3626,8 +3879,9 @@
             const container = document.getElementById('dashboardContainer');
             if (!container) return;
 
+            const currentTasks = getCurrentTasks();
             const today = new Date().toISOString().split('T')[0];
-            const active = tasks.filter(t => t.status !== 'archived');
+            const active = currentTasks.filter(t => t.status !== 'archived');
 
             // 6模块完成率对比
             const catCompletion = CATEGORIES.map(cat => {
@@ -3787,6 +4041,7 @@
         }
 
         function getWeekTrend() {
+            const currentTasks = getCurrentTasks();
             const today = new Date();
             const dayOfWeek = today.getDay() || 7; // 1-7
             const weekStart = new Date(today); weekStart.setDate(today.getDate() - dayOfWeek + 1);
@@ -3799,8 +4054,8 @@
                 const d2 = new Date(lastWeekStart); d2.setDate(lastWeekStart.getDate() + i);
                 const s1 = d1.toISOString().split('T')[0];
                 const s2 = d2.toISOString().split('T')[0];
-                const c1 = tasks.filter(t => t.completedDate === s1).length;
-                const c2 = tasks.filter(t => t.completedDate === s2).length;
+                const c1 = currentTasks.filter(t => t.completedDate === s1).length;
+                const c2 = currentTasks.filter(t => t.completedDate === s2).length;
                 thisWeekTotal += c1;
                 lastWeekTotal += c2;
                 daily.push({ day: days[i], thisWeek: c1, lastWeek: c2 });
@@ -3866,7 +4121,8 @@
             const container = document.getElementById('ganttContainer');
             if (!container) return;
 
-            const ganttTasks = tasks.filter(t => t.status !== 'archived' && t.dueDate);
+            const currentTasks = getCurrentTasks();
+            const ganttTasks = currentTasks.filter(t => t.status !== 'archived' && t.dueDate);
 
             if (ganttTasks.length === 0) {
                 container.innerHTML = '<div class="gantt-empty">暂无可显示的甘特图数据，请确保任务有截止日期</div>';
@@ -4075,8 +4331,9 @@
         }
 
         function exportCSV() {
+            const currentTasksArr = getCurrentTasks();
             const headers = ['ID', '名称', '分类', '优先级', '紧急度', '状态', '截止日期', '完成日期', '阻塞', '标签'];
-            const rows = tasks.map(t => [
+            const rows = currentTasksArr.map(t => [
                 t.id,
                 t.name,
                 t.category,
@@ -4088,13 +4345,15 @@
                 t.blocked ? '是' : '否',
                 (t.tags || []).join(';')
             ]);
+            const dirLabel = currentDirection === 'recruit' ? '招聘管理' : '企业文化';
             const csv = [headers.join(','), ...rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))].join('\n');
-            downloadBlob('\ufeff' + csv, `任务台账_${new Date().toISOString().split('T')[0]}.csv`, 'text/csv;charset=utf-8;');
+            downloadBlob('\ufeff' + csv, `${dirLabel}_任务台账_${new Date().toISOString().split('T')[0]}.csv`, 'text/csv;charset=utf-8;');
         }
 
         function exportJSON() {
-            const data = JSON.stringify(tasks, null, 2);
-            downloadBlob(data, `任务数据_${new Date().toISOString().split('T')[0]}.json`, 'application/json');
+            const data = JSON.stringify(getCurrentTasks(), null, 2);
+            const dirLabel = currentDirection === 'recruit' ? '招聘管理' : '企业文化';
+            downloadBlob(data, `${dirLabel}_任务数据_${new Date().toISOString().split('T')[0]}.json`, 'application/json');
         }
 
         function exportWeeklyReport() {
@@ -4106,7 +4365,8 @@
             const weekStartStr = weekStart.toISOString().split('T')[0];
             const weekEndStr = weekEnd.toISOString().split('T')[0];
 
-            const active = tasks.filter(t => t.status !== 'archived');
+            const currentTasksArr = getCurrentTasks();
+            const active = currentTasksArr.filter(t => t.status !== 'archived');
 
             // 本周新增（dueDate 在本周内）
             const thisWeekAdded = active.filter(t => t.dueDate >= weekStartStr && t.dueDate <= weekEndStr);
@@ -4130,7 +4390,8 @@
             // 下周计划（待开始 + 进行中）
             const nextWeekPlan = active.filter(t => t.status === 'todo' || t.status === 'in-progress');
 
-            let md = `# 📊 企业文化工作周报\n\n`;
+            const dirLabel = currentDirection === 'recruit' ? '招聘管理' : '企业文化';
+            let md = `# 📊 ${dirLabel}工作周报\n\n`;
             md += `> 生成时间：${today}\n`;
             md += `> 统计周期：${weekStartStr} 至 ${weekEndStr}\n\n`;
 
@@ -4173,16 +4434,73 @@
             }
 
             md += `---\n`;
-            md += `*本报告由企业文化工作看板自动生成*\n`;
+            md += `*本报告由人力资源工作看板自动生成*\n`;
 
             downloadBlob(md, `工作周报_${weekStartStr}.md`, 'text/markdown');
+        }
+
+        // ==================== 方向切换 ====================
+
+        function switchDirection(direction) {
+            if (currentDirection === direction) return;
+            currentDirection = direction;
+            localStorage.setItem('hr_current_direction', direction);
+
+            // 更新Tab按钮样式
+            document.querySelectorAll('.direction-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.direction === direction) {
+                    tab.classList.add('active');
+                }
+            });
+
+            // 更新分类筛选器选项
+            updateCategoryFilter();
+
+            // 更新目标输入框的默认值和placeholder
+            const goalInput = document.getElementById('goalInput');
+            if (goalInput) {
+                if (direction === 'recruit') {
+                    goalInput.placeholder = '输入本月招聘目标...';
+                } else {
+                    goalInput.placeholder = '输入本月目标...';
+                }
+                // 恢复该方向的目标值
+                const savedGoal = localStorage.getItem(getGoalKey());
+                if (savedGoal) {
+                    goalInput.value = savedGoal;
+                }
+            }
+
+            // 刷新所有模块
+            refreshAll();
+            renderKanban();
+            renderDashboard();
+            renderGantt();
+            renderAnalyticsPanel();
+        }
+
+        function updateCategoryFilter() {
+            const filterCategory = document.getElementById('filterCategory');
+            if (!filterCategory) return;
+            const cats = currentDirection === 'recruit'
+                ? ['简历筛选', '面试邀约', 'Offer跟进', '入职办理', '招聘数据', '渠道管理']
+                : ['文化活动', '员工关怀', '品牌传播', '视觉设计', '培训发展', '荣誉激励'];
+            filterCategory.innerHTML = '<option value="all">所有分类</option>' +
+                cats.map(c => `<option value="${c}">${c}</option>`).join('');
+
+            // 更新弹窗中的分类 datalist
+            const categoryList = document.getElementById('categoryList');
+            if (categoryList) {
+                categoryList.innerHTML = cats.map(c => `<option value="${c}">`).join('');
+            }
         }
 
         // ==================== 可视化分析面板 ====================
 
         let analyticsCollapsed = false;
 
-        const CATEGORIES = [
+        const CATEGORIES_CULTURE = [
             { key: '文化活动', icon: '🎯', color: '#4f46e5' },
             { key: '员工关怀', icon: '💝', color: '#059669' },
             { key: '品牌传播', icon: '📢', color: '#d97706' },
@@ -4190,6 +4508,26 @@
             { key: '培训发展', icon: '📚', color: '#6366f1' },
             { key: '荣誉激励', icon: '🏆', color: '#e11d48' }
         ];
+
+        const CATEGORIES_RECRUIT = [
+            { key: '简历筛选', icon: '📋', color: '#2563eb' },
+            { key: '面试邀约', icon: '📞', color: '#059669' },
+            { key: 'Offer跟进', icon: '🤝', color: '#d97706' },
+            { key: '入职办理', icon: '🎓', color: '#dc2626' },
+            { key: '招聘数据', icon: '📊', color: '#6366f1' },
+            { key: '渠道管理', icon: '🔄', color: '#e11d48' }
+        ];
+
+        // 根据当前方向返回对应的 CATEGORIES
+        function getCategories() {
+            return currentDirection === 'recruit' ? CATEGORIES_RECRUIT : CATEGORIES_CULTURE;
+        }
+
+        // 为了兼容现有代码中直接引用 CATEGORIES 的地方，使用 getter
+        Object.defineProperty(window, 'CATEGORIES', {
+            get: function() { return getCategories(); },
+            configurable: true
+        });
 
         function toggleAnalytics() {
             analyticsCollapsed = !analyticsCollapsed;
@@ -4209,8 +4547,9 @@
             const chartEl = document.getElementById('analyticsCharts');
             if (!kpiEl || !chartEl) return;
 
+            const currentTasks = getCurrentTasks();
             const today = new Date().toISOString().split('T')[0];
-            const active = tasks.filter(t => t.status !== 'archived');
+            const active = currentTasks.filter(t => t.status !== 'archived');
             const total = active.length;
 
             // 6模块KPI卡片：每个模块显示 任务数/完成率/超期数
@@ -4396,6 +4735,14 @@
 
         // ==================== 初始化 ====================
         loadTasks();
+        // 恢复方向Tab状态
+        document.querySelectorAll('.direction-tab').forEach(tab => {
+            tab.classList.remove('active');
+            if (tab.dataset.direction === currentDirection) {
+                tab.classList.add('active');
+            }
+        });
+        updateCategoryFilter();
         updateKPI();
         updateRisks();
         initGoal();
